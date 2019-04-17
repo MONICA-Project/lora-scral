@@ -1,0 +1,20 @@
+# If you modify this, please also make sure to edit init.sh
+
+[Unit]
+Description=MonicaScral
+After=network-online.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/usr/local/bin/monicascral
+ExecStart=/usr/bin/mono /usr/local/bin/monicascral/MonicaScral.exe
+KillMode=control-group
+TimeoutStopSec=5
+Restart=on-failure
+StandardOutput=null
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target
+Alias=monicascral.service

@@ -1,0 +1,16 @@
+﻿[logging]
+path=/var/log/monicascral.log
+
+[mqtt]
+type=mqtt
+server=127.0.01
+topic=lora/data/+;lora/panic/+
+
+[scral]
+server=http://example.org:8080
+register_addr=/gps-tag
+register_method=post
+update_addr=/gps-tag/localization
+update_method=put
+panic_addr=/gps-tag/alert
+panic_method=put

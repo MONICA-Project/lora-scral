@@ -117,21 +117,21 @@ namespace Fraunhofer.Fit.IoT.MonicaScral {
     private String RequestString(String address, String json = "", Boolean withoutput = true, RequestMethod method = RequestMethod.GET) {
       String ret = null;
       lock(this.getLock) {
-        HttpWebRequest request = WebRequest.CreateHttp(this.config["server"] + address);
-        request.Timeout = 2000;
-        if(this.authRequired) {
-          request.Headers.Add(HttpRequestHeader.Authorization, this.auth);
-        }
-        if(method == RequestMethod.POST || method == RequestMethod.PUT) {
-          Byte[] requestdata = Encoding.ASCII.GetBytes(json);
-          request.ContentLength = requestdata.Length;
-          request.Method = method.ToString();
-          request.ContentType = "application/json";
-          using(Stream stream = request.GetRequestStream()) {
-            stream.Write(requestdata, 0, requestdata.Length);
-          }
-        }
         try {
+          HttpWebRequest request = WebRequest.CreateHttp(this.config["server"] + address);
+          request.Timeout = 2000;
+          if(this.authRequired) {
+            request.Headers.Add(HttpRequestHeader.Authorization, this.auth);
+          }
+          if(method == RequestMethod.POST || method == RequestMethod.PUT) {
+            Byte[] requestdata = Encoding.ASCII.GetBytes(json);
+            request.ContentLength = requestdata.Length;
+            request.Method = method.ToString();
+            request.ContentType = "application/json";
+            using(Stream stream = request.GetRequestStream()) {
+              stream.Write(requestdata, 0, requestdata.Length);
+            }
+          }
           using(HttpWebResponse response = (HttpWebResponse)request.GetResponse()) {
             if(response.StatusCode == HttpStatusCode.Unauthorized) {
               Console.Error.WriteLine("Benutzer oder Passwort falsch!");

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+systemctl enable monicascral
+systemctl daemon-reload
+
+if [ -f /tmp/monicascral_service_runner ]; then
+    service monicascral start
+    rm /tmp/monicascral_service_runner
+fi

@@ -12,15 +12,15 @@ namespace Fraunhofer.Fit.IoT.MonicaScral {
     static void Main(String[] args) => new Program(args);
 
     public Program(String[] args) {
-      MqttListener m = new MqttListener(new Dictionary<String, String>() { { "type", "mqtt" }, { "server", "10.100.0.20" }, { "topic", "lora/data/+;lora/panic/+" } });
-      ScralPusher s = new ScralPusher(new Dictionary<String, String>() {
-        { "server", "http://monappdwp3.monica-cloud.eu:8250" },
-        { "register_addr", "/scral/v1.0/gps-tracker-gw/gps-tag" },
-        { "register_method", "post" },
-        { "update_addr", "/scral/v1.0/gps-tracker-gw/gps-tag/localization" },
-        { "update_method", "put" },
-        { "panic_addr", "/scral/v1.0/gps-tracker-gw/gps-tag/alert" },
-        { "panic_method", "put" },});
+      InIReader.SetSearchPath(new List<String>() { "/etc/monicascral", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\monicascral" });
+      if(!InIReader.ConfigExist("settings")) {
+        Helper.WriteError("No settings.ini found. Abord!");
+        return;
+      }
+      InIReader settings = InIReader.GetInstance("settings");
+      this.logger.SetPath(settings.GetValue("logging", "path"));
+      MqttListener m = new MqttListener(settings.GetSection("mqtt"));
+      ScralPusher s = new ScralPusher(settings.GetSection("scral"));
       m.Update += s.DataInput;
       this.WaitForShutdown();
       m.Dispose();

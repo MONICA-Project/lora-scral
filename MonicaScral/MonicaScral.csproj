@@ -70,5 +70,18 @@
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="config-example\settings.conf.example">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="dpkg\control" />
+    <None Include="dpkg\create-Builds.bat" />
+    <None Include="dpkg\monicascral-logrotate" />
+    <None Include="dpkg\monicascral.service" />
+    <None Include="dpkg\make-deb.sh" />
+    <None Include="dpkg\postinst" />
+    <None Include="dpkg\preinst" />
+    <None Include="dpkg\prerm" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

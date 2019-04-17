@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [[ $(systemctl is-active monicascral || true) == "active" ]]
+then
+    touch /tmp/monicascral_service_runner
+    service monicascral stop
+fi
