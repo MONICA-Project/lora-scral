@@ -51,7 +51,7 @@ namespace Fraunhofer.Fit.IoT.MonicaScral {
         { "sensor", "tag" },
         { "type", "uwb" },
         { "tagId", (String)data["Name"] },
-        { "timestamp", DateTime.Now.ToString("o") },
+        { "timestamp", DateTime.UtcNow.ToString("o") },
         { "unitOfMeasurements", "meters" },
         { "observationType", "propietary" },
         { "state", "active" }
@@ -72,7 +72,7 @@ namespace Fraunhofer.Fit.IoT.MonicaScral {
         Dictionary<String, Object> d = new Dictionary<String, Object> {
         { "type", "uwb" },
         { "tagId", (String)data["Name"] },
-        { "timestamp", DateTime.Now.ToString("o") },
+        { "timestamp", DateTime.UtcNow.ToString("o") },
         { "lat", (Double)data["Gps"]["Latitude"] },
         { "lon", (Double)data["Gps"]["Longitude"] },
         { "height", (Double)data["Gps"]["Height"] },
@@ -100,7 +100,7 @@ namespace Fraunhofer.Fit.IoT.MonicaScral {
         { "timestamp", DateTime.Now.ToString("o") },
         { "last_known_lat", (Double)data["Gps"]["LastLatitude"] },
         { "last_known_lon", (Double)data["Gps"]["LastLongitude"] },
-        { "last_known_gps", DateTime.Parse((String)data["Gps"]["LastGPSPos"], DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AssumeUniversal).ToLocalTime().ToString("o") }
+        { "last_known_gps", DateTime.Parse((String)data["Gps"]["LastGPSPos"], DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AssumeUniversal).ToString("o") }
       };
       try {
         String addr = this.config["panic_addr"];
