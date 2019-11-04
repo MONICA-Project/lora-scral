@@ -82,6 +82,8 @@
     <None Include="dpkg\postinst" />
     <None Include="dpkg\preinst" />
     <None Include="dpkg\prerm" />
+	<None Include="..\CHANGELOG.md" />
+	<None Include="..\README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
