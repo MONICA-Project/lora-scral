@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{AF25B9BC-7D93-4CEC-B5E2-8A8383679787}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Fraunhofer.Fit.IoT.MonicaScral</RootNamespace>
-    <AssemblyName>MonicaScral</AssemblyName>
+    <RootNamespace>Fraunhofer.Fit.IoT.LoraScral</RootNamespace>
+    <AssemblyName>Lora-Scral</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

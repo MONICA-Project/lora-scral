@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonicaScral", "MonicaScral\MonicaScral.csproj", "{AF25B9BC-7D93-4CEC-B5E2-8A8383679787}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lora-Scral", "Lora-Scral\Lora-Scral.csproj", "{AF25B9BC-7D93-4CEC-B5E2-8A8383679787}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils-IoT", "..\Utils\Utils-IoT\Utils-IoT\Utils-IoT.csproj", "{B870E4D5-6806-4A0B-B233-8907EEDC5AFC}"
 EndProject
