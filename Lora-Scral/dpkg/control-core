@@ -1,0 +1,9 @@
+Package: ttnbridge
+Version: x.x-x
+Section: base
+Priority: optional
+Architecture: any
+Depends: dotnet-runtime-3.0 (>= 3.0.1)
+Maintainer: BlubbFish <dev@blubbfish.net>
+Description: TTN-Bridge
+ Converts tracking data from TTN mqtt to local mqtt

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿#if !NETCOREAPP
+using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
 
@@ -35,7 +36,7 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.1")]
 [assembly: AssemblyFileVersion("1.0.1")]
-
+#endif
 /*
  * 1.0.0 First Version
  * 1.0.1 Update to the new ConnectionDataMqtt

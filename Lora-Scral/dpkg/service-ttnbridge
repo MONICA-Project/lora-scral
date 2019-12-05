@@ -1,0 +1,20 @@
+# If you modify this, please also make sure to edit init.sh
+
+[Unit]
+Description=TTN-Bridge
+After=network-online.target
+
+[Service]
+User=ttnbridgebot
+Group=ttnbridgebot
+WorkingDirectory=/usr/local/bin/ttnbridge
+ExecStart=/usr/bin/dotnet /usr/local/bin/ttnbridge/TTN-Bridge.dll
+KillMode=control-group
+TimeoutStopSec=5
+Restart=on-failure
+StandardOutput=null
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target
+Alias=ttnbridge.service

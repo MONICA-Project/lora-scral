@@ -1,0 +1,9 @@
+#!/bin/bash
+
+DEBNAME="ttnbridge"
+
+if [[ $(systemctl is-active $DEBNAME || true) == "active" ]]
+then
+    touch /tmp/$DEBNAME_service_runner
+    service $DEBNAME stop
+fi

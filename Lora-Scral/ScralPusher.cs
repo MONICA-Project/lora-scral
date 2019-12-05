@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +11,7 @@ using LitJson;
 namespace Fraunhofer.Fit.IoT.MonicaScral {
   class ScralPusher {
     private readonly List<String> nodes = new List<String>();
+    private readonly Object getLockNodes = new object();
     private readonly Dictionary<String, String> config;
     private readonly Object getLock = new Object();
     private readonly Boolean authRequired = false;
@@ -19,30 +19,32 @@ namespace Fraunhofer.Fit.IoT.MonicaScral {
 
     public ScralPusher(Dictionary<String, String> settings) => this.config = settings;
 
-    internal async void DataInput(Object sender, MqttEvents e) => await Task.Run(() => {
+    internal void DataInput(String topic, String message, DateTime _1) {
       try {
-        JsonData data = JsonMapper.ToObject(e.Message);
-        if(this.CheckRegister(data)) {
-          if(e.Topic.StartsWith("lora/data")) {
+        JsonData data = JsonMapper.ToObject(message);
+        if (this.CheckRegister(data)) {
+          if (topic.StartsWith("lora/data")) {
             this.SendUpdate(data);
-          } else if(e.Topic.StartsWith("lora/panic")) {
+          } else if (topic.StartsWith("lora/panic")) {
             this.SendPanic(data);
           }
         }
-      } catch(Exception ex) {
+      } catch (Exception ex) {
         Helper.WriteError("Something is wrong: " + ex.Message);
       }
-    });
+    }
 
     private Boolean CheckRegister(JsonData data) {
-      if(data.ContainsKey("Name") && data["Name"].IsString) {
-        if(!this.nodes.Contains((String)data["Name"])) {
-          this.SendRegister(data);
-          this.nodes.Add((String)data["Name"]);
+      lock (this.getLockNodes) {
+        if (data.ContainsKey("Name") && data["Name"].IsString) {
+          if (!this.nodes.Contains((String)data["Name"])) {
+            this.SendRegister(data);
+            this.nodes.Add((String)data["Name"]);
+          }
+          return true;
         }
-        return true;
+        return false;
       }
-      return false;
     }
 
     private void SendRegister(JsonData data) {
@@ -59,7 +61,7 @@ namespace Fraunhofer.Fit.IoT.MonicaScral {
       try {
         String addr = this.config["register_addr"];
         if(Enum.TryParse(this.config["register_method"], true, out RequestMethod meth)) {
-          this.RequestString(addr, JsonMapper.ToJson(d), false, meth);
+          _ = this.RequestString(addr, JsonMapper.ToJson(d), false, meth);
           Console.WriteLine(meth.ToString() + " " + this.config["register_addr"] + ": " + JsonMapper.ToJson(d));
         }
       } catch(Exception e) {
@@ -84,7 +86,7 @@ namespace Fraunhofer.Fit.IoT.MonicaScral {
         try {
           String addr = this.config["update_addr"];
           if(Enum.TryParse(this.config["update_method"], true, out RequestMethod meth)) {
-            this.RequestString(addr, JsonMapper.ToJson(d), false, meth);
+            _ = this.RequestString(addr, JsonMapper.ToJson(d), false, meth);
             Console.WriteLine(meth.ToString() + " " + this.config["update_addr"] + ": " + JsonMapper.ToJson(d));
           }
         } catch(Exception e) {
@@ -105,7 +107,7 @@ namespace Fraunhofer.Fit.IoT.MonicaScral {
       try {
         String addr = this.config["panic_addr"];
         if(Enum.TryParse(this.config["panic_method"], true, out RequestMethod meth)) {
-          this.RequestString(addr, JsonMapper.ToJson(d), false, meth);
+          _ = this.RequestString(addr, JsonMapper.ToJson(d), false, meth);
           Console.WriteLine(meth.ToString() + " " + this.config["panic_addr"] + ": " + JsonMapper.ToJson(d));
         }
       } catch(Exception e) {
@@ -128,19 +130,17 @@ namespace Fraunhofer.Fit.IoT.MonicaScral {
             request.ContentLength = requestdata.Length;
             request.Method = method.ToString();
             request.ContentType = "application/json";
-            using(Stream stream = request.GetRequestStream()) {
-              stream.Write(requestdata, 0, requestdata.Length);
-            }
+            using Stream stream = request.GetRequestStream();
+            stream.Write(requestdata, 0, requestdata.Length);
           }
-          using(HttpWebResponse response = (HttpWebResponse)request.GetResponse()) {
-            if(response.StatusCode == HttpStatusCode.Unauthorized) {
-              Console.Error.WriteLine("Benutzer oder Passwort falsch!");
-              throw new Exception("Benutzer oder Passwort falsch!");
-            }
-            if(withoutput) {
-              StreamReader reader = new StreamReader(response.GetResponseStream());
-              ret = reader.ReadToEnd();
-            }
+          using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+          if (response.StatusCode == HttpStatusCode.Unauthorized) {
+            Console.Error.WriteLine("Benutzer oder Passwort falsch!");
+            throw new Exception("Benutzer oder Passwort falsch!");
+          }
+          if (withoutput) {
+            StreamReader reader = new StreamReader(response.GetResponseStream());
+            ret = reader.ReadToEnd();
           }
         } catch(Exception e) {
           throw new WebException("Error while uploading to Scal. Resource: \"" + this.config["server"] + address + "\" Method: " + method + " Data: " + json + " Fehler: " + e.Message);

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+useradd -M ttnbridgebot
+usermod -L ttnbridgebot
+groupadd ttnbridgebot
+usermod -G ttnbridgebot,adm ttnbridgebot
