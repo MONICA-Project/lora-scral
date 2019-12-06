@@ -1,4 +1,4 @@
-/var/log/monicascral.log {
+/var/log/lorascral.log {
 	compress
 	copytruncate
 	daily

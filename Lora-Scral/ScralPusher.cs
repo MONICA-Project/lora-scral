@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 using BlubbFish.Utils;
 using LitJson;
 
-namespace Fraunhofer.Fit.IoT.MonicaScral {
+namespace Fraunhofer.Fit.IoT.LoraScral {
   class ScralPusher {
     private readonly List<String> nodes = new List<String>();
-    private readonly Object getLockNodes = new object();
+    private readonly Object getLockNodes = new Object();
     private readonly Dictionary<String, String> config;
     private readonly Object getLock = new Object();
     private readonly Boolean authRequired = false;

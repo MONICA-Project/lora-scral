@@ -1,5 +1,5 @@
 ﻿[logging]
-path=/var/log/monicascral.log
+path=/var/log/lorascral.log
 
 [mqtt]
 type=mqtt

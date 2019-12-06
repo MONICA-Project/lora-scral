@@ -1,9 +1,9 @@
-Package: monicascral
+Package: lorascral
 Version: x.x-x
 Section: base
 Priority: optional
 Architecture: any
-Depends: mono-runtime (>= 5.18), libmono-posix4.0-cil (>= 5.18)
+Depends: dotnet-runtime-3.0 (>= 3.0.1)
 Maintainer: BlubbFish <dev@blubbfish.net>
-Description: MonicaScral
+Description: Lora-Scral
  Pushes Loratracker data to Monica Scral endpoint

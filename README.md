@@ -26,11 +26,12 @@ This projects depends on different librarys.
 ##### Internal
 * BlubbFish.Utils ([Utils](http://git.blubbfish.net/vs_utils/Utils))
 * BlubbFish.Utils.IoT ([Utils-IoT](http://git.blubbfish.net/vs_utils/Utils-IoT))
+* BlubbFish.Utils.IoT.Bots ([Bot-Utils](http://git.blubbfish.net/vs_utils/Bot-Utils.git))
 * BlubbFish.Utils.IoT.Connector.Data.Mqtt ([ConnectorDataMqtt](http://git.blubbfish.net/vs_utils/ConnectorDataMqtt))
 
 ##### External
 * litjson
-* Mono.Posix
+* M2Mqtt
 
 ## Contributing
 Contributions are welcome. 

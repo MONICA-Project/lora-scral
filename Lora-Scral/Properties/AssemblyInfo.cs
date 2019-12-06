@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
-[assembly: AssemblyTitle("MonicaScral")]
+[assembly: AssemblyTitle("Lora-Scral")]
 [assembly: AssemblyDescription("Pushes Loratracker data to Monica Scral endpoint")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Fraunhofer FIT")]
-[assembly: AssemblyProduct("MonicaScral")]
-[assembly: AssemblyCopyright("Copyright ©  2019 - 31.05.2019")]
+[assembly: AssemblyProduct("Lora-Scral")]
+[assembly: AssemblyCopyright("Copyright © Fraunhofer FIT, BlubbFish 2019 - 31.05.2019")]
 [assembly: AssemblyTrademark("Fraunhofer FIT, BlubbFish")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("de-DE")]

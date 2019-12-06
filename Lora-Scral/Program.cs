@@ -5,7 +5,7 @@ using BlubbFish.Utils;
 using BlubbFish.Utils.IoT.Bots;
 using BlubbFish.Utils.IoT.Connector;
 
-namespace Fraunhofer.Fit.IoT.MonicaScral {
+namespace Fraunhofer.Fit.IoT.LoraScral {
   class Program : ABot {
     private ADataBackend mqtt;
     private ScralPusher scral;
@@ -13,7 +13,7 @@ namespace Fraunhofer.Fit.IoT.MonicaScral {
     static void Main(String[] _1) => new Program();
 
     public Program() {
-      InIReader.SetSearchPath(new List<String>() { "/etc/monicascral", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\monicascral" });
+      InIReader.SetSearchPath(new List<String>() { "/etc/lorascral", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\lorascral" });
       if (!InIReader.ConfigExist("settings")) {
         Helper.WriteError("No settings.ini found. Abord!");
         return;

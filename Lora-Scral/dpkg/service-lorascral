@@ -1,14 +1,14 @@
 # If you modify this, please also make sure to edit init.sh
 
 [Unit]
-Description=TTN-Bridge
+Description=Lora-Scral
 After=network-online.target
 
 [Service]
-User=ttnbridgebot
-Group=ttnbridgebot
-WorkingDirectory=/usr/local/bin/ttnbridge
-ExecStart=/usr/bin/dotnet /usr/local/bin/ttnbridge/TTN-Bridge.dll
+User=lorascralbot
+Group=lorascralbot
+WorkingDirectory=/usr/local/bin/lorascral
+ExecStart=/usr/bin/dotnet /usr/local/bin/lorascral/Lora-Scral.dll
 KillMode=control-group
 TimeoutStopSec=5
 Restart=on-failure
@@ -17,4 +17,4 @@ StandardError=syslog
 
 [Install]
 WantedBy=multi-user.target
-Alias=ttnbridge.service
+Alias=lorascral.service

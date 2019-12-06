@@ -1,9 +1,17 @@
 #!/bin/bash
 
-systemctl enable monicascral
+DEBNAME="lorascral"
+
+systemctl enable $DEBNAME
 systemctl daemon-reload
 
-if [ -f /tmp/monicascral_service_runner ]; then
-    service monicascral start
-    rm /tmp/monicascral_service_runner
+touch /var/log/lorascral.log
+chown lorascralbot:lorascralbot /var/log/lorascral.log
+chmod 644 /var/log/lorascral.log
+
+chown -R lorascralbot:lorascralbot /usr/local/bin/$DEBNAME
+
+if [ -f /tmp/$DEBNAME_service_runner ]; then
+    service $DEBNAME start
+    rm /tmp/$DEBNAME_service_runner
 fi

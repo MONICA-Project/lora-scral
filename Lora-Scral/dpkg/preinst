@@ -1,2 +1,6 @@
 #!/bin/bash
 
+useradd -M lorascralbot
+usermod -L lorascralbot
+groupadd lorascralbot
+usermod -G lorascralbot,adm lorascralbot

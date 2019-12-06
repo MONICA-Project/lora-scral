@@ -2,18 +2,25 @@
 
 HOMEDIR=$HOME
 ROOT="$HOMEDIR/deb"
-OUTPUT="../bin/Release"
+OUTPUT="../bin/Release/netcoreapp3.0"
 
-EXEC="$ROOT/usr/local/bin/monicascral"
-CONFIG="$ROOT/etc/monicascral"
+DEBNAME="lorascral"
+CSPROJFILE="Lora-Scral_Core.csproj"
+
+EXEC="$ROOT/usr/local/bin/$DEBNAME"
+CONFIG="$ROOT/etc/$DEBNAME"
 SYSTEMD="$ROOT/lib/systemd/system"
 LOGROTATE="$ROOT/etc/logrotate.d"
 
+echo "Catch all paths together for $DEBNAME."
+
 DEBIAN="$ROOT/DEBIAN"
-VMAJOR=$(grep -e "^\[assembly: AssemblyVersion(\"" ../Properties/AssemblyInfo.cs | cut -d'"' -f 2 | cut -d'.' -f 1)
-VMINOR=$(grep -e "^\[assembly: AssemblyVersion(\"" ../Properties/AssemblyInfo.cs | cut -d'"' -f 2 | cut -d'.' -f 2)
-VBUILD=$(grep -e "^\[assembly: AssemblyVersion(\"" ../Properties/AssemblyInfo.cs | cut -d'"' -f 2 | cut -d'.' -f 3)
+VMAJOR=$(grep -e "<Version>" ../$CSPROJFILE | cut -d'>' -f 2 | cut -d'<' -f 1 | cut -d'.' -f 1)
+VMINOR=$(grep -e "<Version>" ../$CSPROJFILE | cut -d'>' -f 2 | cut -d'<' -f 1 | cut -d'.' -f 2)
+VBUILD=$(grep -e "<Version>" ../$CSPROJFILE | cut -d'>' -f 2 | cut -d'<' -f 1 | cut -d'.' -f 3)
 ARCHT=$1
+
+echo "Versionsumber parsed: $VMAJOR.$VMINOR-$VBUILD."
 
 mkdir -p $EXEC
 mkdir -p $CONFIG
@@ -21,7 +28,9 @@ mkdir -p $DEBIAN
 mkdir -p $SYSTEMD
 mkdir -p $LOGROTATE
 
-cp control $DEBIAN
+echo "Created directorys."
+
+cp control $DEBIAN/control
 cp preinst $DEBIAN
 cp postinst $DEBIAN
 cp prerm $DEBIAN
@@ -29,21 +38,44 @@ sed -i s/Version:\ x\.x-x/"Version: $VMAJOR.$VMINOR-$VBUILD"/ $DEBIAN/control
 sed -i s/Architecture:\ any/"Architecture: $ARCHT"/ $DEBIAN/control
 chmod 755 $DEBIAN -R
 
-cp monicascral.service $SYSTEMD
-chmod 644 $SYSTEMD/monicascral.service
+echo "Copy deb control files."
 
-cp $OUTPUT/*.exe $EXEC/
+cp "service-$DEBNAME" "$SYSTEMD/$DEBNAME.service"
+chmod 644 $SYSTEMD/"$DEBNAME.service"
+
+echo "Copy $DEBNAME.service to $SYSTEMD."
+
+cp $OUTPUT/*.runtimeconfig.json $EXEC/
 find $OUTPUT -name \*.dll -exec cp {} $EXEC/ \;
 chmod 644 $EXEC/*
 chmod 755 $EXEC
+
+echo "Copy programm files to $EXEC."
 
 cp $OUTPUT/config-example/* $CONFIG
 chmod 644 $CONFIG/*
 chmod 755 $CONFIG
 
-cp monicascral-logrotate $LOGROTATE/monicascral
+echo "Copy example-conf to $CONFIG."
+
+cp "logrotate-$DEBNAME" "$LOGROTATE/$DEBNAME.conf"
 chmod 644 $LOGROTATE/*
 
+echo "Copy $DEBNAME.conf to $LOGROTATE."
+
 dpkg-deb --build $ROOT
-mv $HOMEDIR/deb.deb ../../../Builds/"$ARCHT-monicascral_$VMAJOR.$VMINOR-$VBUILD.deb"
+
+echo "Build deb packet."
+
+
+TARGETFILE="$DEBNAME""_$VMAJOR.$VMINOR-$VBUILD.deb"
+mv $HOMEDIR/deb.deb "../../../Builds/$ARCHT-$TARGETFILE"
+
+echo "Move $ARCHT-$TARGETFILE to Builds."
+
 rm $HOMEDIR/deb -r
+
+echo "Remove $HOMEDIR/deb."
+
+echo "##[set-output name=debuilderfile;]$TARGETFILE"
+echo "##[set-output name=builddaterelease;]$(date +"%F_%H%M%S")"
