@@ -5,7 +5,7 @@ ROOT="$HOMEDIR/deb"
 OUTPUT="../bin/Release/netcoreapp3.0"
 
 DEBNAME="lorascral"
-CSPROJFILE="Lora-Scral_Core.csproj"
+CSPROJFILE="Lora-Scral.csproj"
 
 EXEC="$ROOT/usr/local/bin/$DEBNAME"
 CONFIG="$ROOT/etc/$DEBNAME"

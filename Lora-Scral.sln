@@ -1,21 +1,32 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lora-Scral", "Lora-Scral\Lora-Scral.csproj", "{AF25B9BC-7D93-4CEC-B5E2-8A8383679787}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lora-Scral", "Lora-Scral\Lora-Scral.csproj", "{DCED776E-2FC9-4677-B779-FB17D379739A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils-IoT", "..\Utils\Utils-IoT\Utils-IoT\Utils-IoT.csproj", "{B870E4D5-6806-4A0B-B233-8907EEDC5AFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "litjson_Core", "..\Librarys\litjson\litjson\litjson_Core.csproj", "{16857801-A1DB-4338-A9AA-B94A8D86D6BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectorDataMqtt", "..\Utils\ConnectorDataMqtt\ConnectorDataMqtt\ConnectorDataMqtt.csproj", "{EE6C8F68-ED46-4C1C-ABDD-CFCDF75104F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectorDataMqtt_Core", "..\Utils\ConnectorDataMqtt\ConnectorDataMqtt\ConnectorDataMqtt_Core.csproj", "{7661C067-0AA2-4799-86A8-D2ECE1A17847}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "litjson_4.7.1", "..\Librarys\litjson\litjson\litjson_4.7.1.csproj", "{91A14CD2-2940-4500-8193-56D37EDDDBAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "M2Mqtt_Core", "..\Librarys\mqtt\M2Mqtt\M2Mqtt_Core.csproj", "{A9802D63-4BAF-4910-A04A-722552267BC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M2Mqtt_4.7.1", "..\Librarys\mqtt\M2Mqtt\M2Mqtt_4.7.1.csproj", "{A11AEF5A-B246-4FE8-8330-06DB73CC8074}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils-IoT_Core", "..\Utils\Utils-IoT\Utils-IoT\Utils-IoT_Core.csproj", "{72DDCE39-68C4-4618-99AD-4ABED628FD41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "..\Utils\Utils\Utils\Utils.csproj", "{FAC8CE64-BF13-4ECE-8097-AEB5DD060098}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils_Core", "..\Utils\Utils\Utils\Utils_Core.csproj", "{691A6428-F4CB-4B21-B8FD-BBE17012F46E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Posix", "..\Librarys\Mono.Posix\Mono.Posix\Mono.Posix.csproj", "{E2CA132E-E85C-40AD-BE94-B138AA68772B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot-Utils_Core", "..\Utils\Bot-Utils\Bot-Utils\Bot-Utils_Core.csproj", "{8CEF1C54-058F-466A-AB84-27FC56C8AC87}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C957D23F-750B-4FC8-BD40-14CA8995F63D}"
+	ProjectSection(SolutionItems) = preProject
+		..\.dockerignore = ..\.dockerignore
+		..\CONTRIBUTING.md = ..\CONTRIBUTING.md
+		..\docker-compose.yml = ..\docker-compose.yml
+		..\Dockerfile = ..\Dockerfile
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+		..\update.sh = ..\update.sh
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,39 +34,39 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AF25B9BC-7D93-4CEC-B5E2-8A8383679787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF25B9BC-7D93-4CEC-B5E2-8A8383679787}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF25B9BC-7D93-4CEC-B5E2-8A8383679787}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF25B9BC-7D93-4CEC-B5E2-8A8383679787}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B870E4D5-6806-4A0B-B233-8907EEDC5AFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B870E4D5-6806-4A0B-B233-8907EEDC5AFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B870E4D5-6806-4A0B-B233-8907EEDC5AFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B870E4D5-6806-4A0B-B233-8907EEDC5AFC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE6C8F68-ED46-4C1C-ABDD-CFCDF75104F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE6C8F68-ED46-4C1C-ABDD-CFCDF75104F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE6C8F68-ED46-4C1C-ABDD-CFCDF75104F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE6C8F68-ED46-4C1C-ABDD-CFCDF75104F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{91A14CD2-2940-4500-8193-56D37EDDDBAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91A14CD2-2940-4500-8193-56D37EDDDBAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91A14CD2-2940-4500-8193-56D37EDDDBAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91A14CD2-2940-4500-8193-56D37EDDDBAA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A11AEF5A-B246-4FE8-8330-06DB73CC8074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A11AEF5A-B246-4FE8-8330-06DB73CC8074}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A11AEF5A-B246-4FE8-8330-06DB73CC8074}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A11AEF5A-B246-4FE8-8330-06DB73CC8074}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FAC8CE64-BF13-4ECE-8097-AEB5DD060098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FAC8CE64-BF13-4ECE-8097-AEB5DD060098}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FAC8CE64-BF13-4ECE-8097-AEB5DD060098}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FAC8CE64-BF13-4ECE-8097-AEB5DD060098}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2CA132E-E85C-40AD-BE94-B138AA68772B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2CA132E-E85C-40AD-BE94-B138AA68772B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2CA132E-E85C-40AD-BE94-B138AA68772B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2CA132E-E85C-40AD-BE94-B138AA68772B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCED776E-2FC9-4677-B779-FB17D379739A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCED776E-2FC9-4677-B779-FB17D379739A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCED776E-2FC9-4677-B779-FB17D379739A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCED776E-2FC9-4677-B779-FB17D379739A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16857801-A1DB-4338-A9AA-B94A8D86D6BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16857801-A1DB-4338-A9AA-B94A8D86D6BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16857801-A1DB-4338-A9AA-B94A8D86D6BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16857801-A1DB-4338-A9AA-B94A8D86D6BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7661C067-0AA2-4799-86A8-D2ECE1A17847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7661C067-0AA2-4799-86A8-D2ECE1A17847}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7661C067-0AA2-4799-86A8-D2ECE1A17847}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7661C067-0AA2-4799-86A8-D2ECE1A17847}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9802D63-4BAF-4910-A04A-722552267BC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9802D63-4BAF-4910-A04A-722552267BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9802D63-4BAF-4910-A04A-722552267BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9802D63-4BAF-4910-A04A-722552267BC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72DDCE39-68C4-4618-99AD-4ABED628FD41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72DDCE39-68C4-4618-99AD-4ABED628FD41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72DDCE39-68C4-4618-99AD-4ABED628FD41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72DDCE39-68C4-4618-99AD-4ABED628FD41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{691A6428-F4CB-4B21-B8FD-BBE17012F46E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{691A6428-F4CB-4B21-B8FD-BBE17012F46E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{691A6428-F4CB-4B21-B8FD-BBE17012F46E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{691A6428-F4CB-4B21-B8FD-BBE17012F46E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CEF1C54-058F-466A-AB84-27FC56C8AC87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CEF1C54-058F-466A-AB84-27FC56C8AC87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CEF1C54-058F-466A-AB84-27FC56C8AC87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CEF1C54-058F-466A-AB84-27FC56C8AC87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {CE98D3EF-81C6-4C8D-B8EF-E1C6A72FDD29}
+		SolutionGuid = {34034D53-E705-4BF7-BB57-9BBCE3720185}
 	EndGlobalSection
 EndGlobal

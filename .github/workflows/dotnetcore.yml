@@ -24,7 +24,7 @@ jobs:
         dotnet-version: 3.0.100
 
     - name: Build with dotnet
-      run: dotnet build Lora-Scral_Core.sln --configuration Release
+      run: dotnet build Lora-Scral.sln --configuration Release
       working-directory: ../lora-scral-project/Lora-Scral
 
     - name: Create deb files
