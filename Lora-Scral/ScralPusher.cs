@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+
 using BlubbFish.Utils;
+
 using LitJson;
 
 namespace Fraunhofer.Fit.IoT.LoraScral {
@@ -16,6 +16,7 @@ namespace Fraunhofer.Fit.IoT.LoraScral {
     private readonly Object getLock = new Object();
     private readonly Boolean authRequired = false;
     private readonly String auth = "";
+    private readonly Dictionary<String, Tuple<Double, Double, DateTime>> last_pos = new Dictionary<String, Tuple<Double, Double, DateTime>>();
 
     public ScralPusher(Dictionary<String, String> settings) => this.config = settings;
 
@@ -72,17 +73,22 @@ namespace Fraunhofer.Fit.IoT.LoraScral {
     private void SendUpdate(JsonData data) {
       if((Boolean)data["Gps"]["Fix"]) {
         Dictionary<String, Object> d = new Dictionary<String, Object> {
-        { "type", "uwb" },
-        { "tagId", (String)data["Name"] },
-        { "timestamp", DateTime.UtcNow.ToString("o") },
-        { "lat", (Double)data["Gps"]["Latitude"] },
-        { "lon", (Double)data["Gps"]["Longitude"] },
-        { "height", (Double)data["Gps"]["Height"] },
-        { "hdop", (Double)data["Gps"]["Hdop"] },
-        { "snr", (Double)data["Snr"] },
-        { "battery_level", (Double)data["BatteryLevel"] },
-        { "host", (String)data["Host"]}
-      };
+          { "type", "uwb" },
+          { "tagId", (String)data["Name"] },
+          { "timestamp", DateTime.UtcNow.ToString("o") },
+          { "lat", (Double)data["Gps"]["Latitude"] },
+          { "lon", (Double)data["Gps"]["Longitude"] },
+          { "height", (Double)data["Gps"]["Height"] },
+          { "hdop", (Double)data["Gps"]["Hdop"] },
+          { "snr", (Double)data["Snr"] },
+          { "battery_level", (Double)data["BatteryLevel"] },
+          { "host", (String)data["Host"]}
+        };
+        if(this.last_pos.ContainsKey((String)data["Name"])) {
+          this.last_pos[(String)data["Name"]] = new Tuple<Double, Double, DateTime>((Double)data["Gps"]["Latitude"], (Double)data["Gps"]["Longitude"], DateTime.UtcNow);
+        } else {
+          this.last_pos.Add((String)data["Name"], new Tuple<Double, Double, DateTime>((Double)data["Gps"]["Latitude"], (Double)data["Gps"]["Longitude"], DateTime.UtcNow));
+        }
         try {
           String addr = this.config["update_addr"];
           if(Enum.TryParse(this.config["update_method"], true, out RequestMethod meth)) {
@@ -100,11 +106,20 @@ namespace Fraunhofer.Fit.IoT.LoraScral {
         { "type", "uwb" },
         { "tagId", (String)data["Name"] },
         { "timestamp", DateTime.Now.ToString("o") },
-        { "last_known_lat", (Double)data["Gps"]["LastLatitude"] },
-        { "last_known_lon", (Double)data["Gps"]["LastLongitude"] },
-        { "last_known_gps", DateTime.Parse((String)data["Gps"]["LastGPSPos"], DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AssumeUniversal).ToString("o") }
       };
-      try {
+      if((Boolean)data["Gps"]["Fix"]) {
+        d.Add("last_known_lat", (Double)data["Gps"]["Latitude"]);
+        d.Add("last_known_lon", (Double)data["Gps"]["Longitude"]);
+        d.Add("last_known_gps", DateTime.UtcNow.ToString("o"));
+      } else {
+        if(!this.last_pos.ContainsKey((String)data["Name"])) {
+          return;
+        }
+        d.Add("last_known_lat", this.last_pos[(String)data["Name"]].Item1);
+        d.Add("last_known_lon", this.last_pos[(String)data["Name"]].Item2);
+        d.Add("last_known_gps", this.last_pos[(String)data["Name"]].Item3.ToString("o"));
+      }
+        try {
         String addr = this.config["panic_addr"];
         if(Enum.TryParse(this.config["panic_method"], true, out RequestMethod meth)) {
           _ = this.RequestString(addr, JsonMapper.ToJson(d), false, meth);
