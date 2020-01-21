@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -18,7 +18,7 @@
     <NeutralLanguage>de-DE</NeutralLanguage>
     <Version>1.2.0</Version>
     <PackageReleaseNotes>
-      1.2.0 Update to new Lora-Gateway-Data 1.1.0
+      1.2.0 New Gateway
       1.1.0 Move to .NET Core
       1.0.1 Update to the new ConnectionDataMqtt
       1.0.0 First Version
