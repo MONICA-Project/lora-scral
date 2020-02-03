@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
-
+using System.Threading.Tasks;
 using BlubbFish.Utils;
 
 using LitJson;
@@ -13,12 +14,18 @@ namespace Fraunhofer.Fit.IoT.LoraScral {
     private readonly List<String> nodes = new List<String>();
     private readonly Object getLockNodes = new Object();
     private readonly Dictionary<String, String> config;
-    private readonly Object getLock = new Object();
     private readonly Boolean authRequired = false;
     private readonly String auth = "";
     private readonly Dictionary<String, Tuple<Double, Double, DateTime>> last_pos = new Dictionary<String, Tuple<Double, Double, DateTime>>();
 
-    public ScralPusher(Dictionary<String, String> settings) => this.config = settings;
+    private static readonly HttpClient client = new HttpClient();
+
+    public ScralPusher(Dictionary<String, String> settings) {
+      this.config = settings;
+      if (this.authRequired) {
+        client.DefaultRequestHeaders.Add("Authorization", this.auth);
+      }
+    }
 
     internal void DataInput(String topic, String message, DateTime _1) {
       try {
@@ -48,7 +55,7 @@ namespace Fraunhofer.Fit.IoT.LoraScral {
       }
     }
 
-    private void SendRegister(JsonData data) {
+    private async void SendRegister(JsonData data) {
       Dictionary<String, Object> d = new Dictionary<String, Object> {
         { "device", "wearable" },
         { "sensor", "tag" },
@@ -62,7 +69,7 @@ namespace Fraunhofer.Fit.IoT.LoraScral {
       try {
         String addr = this.config["register_addr"];
         if(Enum.TryParse(this.config["register_method"], true, out RequestMethod meth)) {
-          _ = this.RequestString(addr, JsonMapper.ToJson(d), false, meth);
+          _ = await this.RequestString(addr, JsonMapper.ToJson(d), false, meth);
           Console.WriteLine(meth.ToString() + " " + this.config["register_addr"] + ": " + JsonMapper.ToJson(d));
         }
       } catch(Exception e) {
@@ -70,7 +77,7 @@ namespace Fraunhofer.Fit.IoT.LoraScral {
       }
     }
 
-    private void SendUpdate(JsonData data) {
+    private async void SendUpdate(JsonData data) {
       if((Boolean)data["Gps"]["Fix"]) {
         Dictionary<String, Object> d = new Dictionary<String, Object> {
           { "type", "uwb" },
@@ -84,15 +91,15 @@ namespace Fraunhofer.Fit.IoT.LoraScral {
           { "battery_level", (Double)data["BatteryLevel"] },
           { "host", (String)data["Host"]}
         };
-        if(this.last_pos.ContainsKey((String)data["Name"])) {
-          this.last_pos[(String)data["Name"]] = new Tuple<Double, Double, DateTime>((Double)data["Gps"]["Latitude"], (Double)data["Gps"]["Longitude"], DateTime.UtcNow);
-        } else {
-          this.last_pos.Add((String)data["Name"], new Tuple<Double, Double, DateTime>((Double)data["Gps"]["Latitude"], (Double)data["Gps"]["Longitude"], DateTime.UtcNow));
-        }
         try {
+          if (this.last_pos.ContainsKey((String)data["Name"])) {
+            this.last_pos[(String)data["Name"]] = new Tuple<Double, Double, DateTime>((Double)data["Gps"]["Latitude"], (Double)data["Gps"]["Longitude"], DateTime.UtcNow);
+          } else {
+            this.last_pos.Add((String)data["Name"], new Tuple<Double, Double, DateTime>((Double)data["Gps"]["Latitude"], (Double)data["Gps"]["Longitude"], DateTime.UtcNow));
+          }
           String addr = this.config["update_addr"];
           if(Enum.TryParse(this.config["update_method"], true, out RequestMethod meth)) {
-            _ = this.RequestString(addr, JsonMapper.ToJson(d), false, meth);
+            _ = await this.RequestString(addr, JsonMapper.ToJson(d), false, meth);
             Console.WriteLine(meth.ToString() + " " + this.config["update_addr"] + ": " + JsonMapper.ToJson(d));
           }
         } catch(Exception e) {
@@ -101,7 +108,7 @@ namespace Fraunhofer.Fit.IoT.LoraScral {
       }
     }
 
-    private void SendPanic(JsonData data) {
+    private async void SendPanic(JsonData data) {
       Dictionary<String, Object> d = new Dictionary<String, Object> {
         { "type", "uwb" },
         { "tagId", (String)data["Name"] },
@@ -122,7 +129,7 @@ namespace Fraunhofer.Fit.IoT.LoraScral {
         try {
         String addr = this.config["panic_addr"];
         if(Enum.TryParse(this.config["panic_method"], true, out RequestMethod meth)) {
-          _ = this.RequestString(addr, JsonMapper.ToJson(d), false, meth);
+          _ = await this.RequestString(addr, JsonMapper.ToJson(d), false, meth);
           Console.WriteLine(meth.ToString() + " " + this.config["panic_addr"] + ": " + JsonMapper.ToJson(d));
         }
       } catch(Exception e) {
@@ -131,38 +138,35 @@ namespace Fraunhofer.Fit.IoT.LoraScral {
     }
 
     #region HTTP Request
-    private String RequestString(String address, String json = "", Boolean withoutput = true, RequestMethod method = RequestMethod.GET) {
+    private async Task<String> RequestString(String address, String json = "", Boolean withoutput = true, RequestMethod method = RequestMethod.GET) {
       String ret = null;
-      lock(this.getLock) {
-        try {
-          HttpWebRequest request = WebRequest.CreateHttp(this.config["server"] + address);
-          request.Timeout = 2000;
-          if(this.authRequired) {
-            request.Headers.Add(HttpRequestHeader.Authorization, this.auth);
+      try {
+        HttpResponseMessage response = null;
+        if (method == RequestMethod.POST || method == RequestMethod.PUT) {
+          HttpContent content = new StringContent(json);
+          content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+          //content.Headers.Add("Content-Type", "application/json");
+          if (method == RequestMethod.POST) {
+            response = await client.PostAsync(this.config["server"] + address, content);
+          } else if (method == RequestMethod.PUT) {
+            response = await client.PutAsync(this.config["server"] + address, content);
           }
-          if(method == RequestMethod.POST || method == RequestMethod.PUT) {
-            Byte[] requestdata = Encoding.ASCII.GetBytes(json);
-            request.ContentLength = requestdata.Length;
-            request.Method = method.ToString();
-            request.ContentType = "application/json";
-            using Stream stream = request.GetRequestStream();
-            stream.Write(requestdata, 0, requestdata.Length);
-          }
-          using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-          if (response.StatusCode == HttpStatusCode.Unauthorized) {
-            Console.Error.WriteLine("Benutzer oder Passwort falsch!");
-            throw new Exception("Benutzer oder Passwort falsch!");
-          }
-          if (withoutput) {
-            StreamReader reader = new StreamReader(response.GetResponseStream());
-            ret = reader.ReadToEnd();
-          }
-        } catch(Exception e) {
-          throw new WebException("Error while uploading to Scal. Resource: \"" + this.config["server"] + address + "\" Method: " + method + " Data: " + json + " Fehler: " + e.Message);
+          content.Dispose();
+        } else if (method == RequestMethod.GET) {
+          response = await client.GetAsync(this.config["server"] + address);
         }
+        if (!response.IsSuccessStatusCode) {
+          throw new Exception(response.StatusCode + ": " + response.ReasonPhrase);
+        }
+        if (withoutput && response != null) {
+          ret = await response.Content.ReadAsStringAsync();
+        }
+      } catch (Exception e) {
+        throw new WebException("Error while uploading to Scal. Resource: \"" + this.config["server"] + address + "\" Method: " + method + " Data: " + json + " Fehler: " + e.Message);
       }
       return ret;
     }
+
     private enum RequestMethod {
       GET,
       POST,

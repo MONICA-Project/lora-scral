@@ -9,15 +9,16 @@
     <PackageId>LoraScral.IoT.Fit.Fraunhofer</PackageId>
     <Description>Pushes Loratracker data to Monica Scral endpoint</Description>
     <Company>Fraunhofer FIT</Company>
-    <Copyright>Copyright © Fraunhofer FIT, BlubbFish 2019 - 20.01.2020</Copyright>
+    <Copyright>Copyright © Fraunhofer FIT, BlubbFish 2019 - 03.02.2020</Copyright>
     <Authors>BlubbFish</Authors>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/MONICA-Project/lora-scral</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MONICA-Project/lora-scral.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <NeutralLanguage>de-DE</NeutralLanguage>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <PackageReleaseNotes>
+      1.2.1 More performance
       1.2.0 New Gateway
       1.1.0 Move to .NET Core
       1.0.1 Update to the new ConnectionDataMqtt

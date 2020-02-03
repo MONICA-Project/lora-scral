@@ -1,4 +1,10 @@
 # Changelog
+## 1.2.1 - More performance
+### New Features
+### Bugfixes
+### Changes
+* New method to send HTTP-Requests that runs async
+
 ## 1.2.0 - New Gateway
 ### New Features
 ### Bugfixes
